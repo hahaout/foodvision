@@ -35,11 +35,11 @@ def predict(request):
             probabilities = torch.nn.functional.softmax(output[0], dim=0)
     
         # Return results (customize with your class names)
-        return {
+        return JsonResponse({
             'success': True,
             'predictions': probabilities.tolist(),
             'classes': ['pizza', 'steak', 'sushi']  # Update with your class names
-        }
+        }, status = 200)
         
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
