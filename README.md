@@ -6,8 +6,8 @@ This project combines a PyTorch deep learning model with a modern web stack feat
 
 Tech Stack
 ----------
-- Frontend: Next.js with TypeScript
-- Backend: Django REST Framework
+- Frontend: Next.js with TypeScript, tRPC
+- Backend: Django
 - AI/ML: PyTorch models from mrdbourke's repository
 - Deployment: (To be determined based on your needs)
 
@@ -46,23 +46,7 @@ Project Structure
 ```bash
 project-root/
 |
-├── ai/                    # PyTorch models and training code
-│   ├── models/            # Pretrained models
-│   ├── notebooks/         # Jupyter notebooks
-│   └── training/          # Training scripts
-│
-├── backend/               # Django project
-│   ├── api/               # Django REST framework
-│   ├── manage.py
-│   └── ...
-│
-├── frontend/              # Next.js application
-│   ├── pages/             # Next.js pages
-│   ├── public/            # Static assets
-│   └── ...
-│
-├── README.md              # This file
-└── ...
+|---(TBA)
 ```
 Running the Application
 ----------------------
@@ -89,13 +73,10 @@ Deployment
 ---------
 To deploy this application:
 1. Frontend: Vercel (recommended for Next.js) or any static hosting
-2. Backend: AWS, GCP, or any Python-compatible hosting
+2. Backend: Python-compatible hosting
 3. AI Models: Can be containerized with Docker for scalability
 
 Contributing
 ------------
 Contributions are welcome! Please open an issue or submit a pull request.
 
-License
--------
-MIT (or specify your preferred license)
