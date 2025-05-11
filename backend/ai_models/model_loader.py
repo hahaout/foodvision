@@ -4,16 +4,6 @@ import os
 from backend.settings import BASE_DIR
 import torchvision
 
-from django.db import models
-
-import torch as T
-from torch import nn
-import os
-from backend.settings import BASE_DIR
-import torchvision
-
-from django.db import models
-
 def create_effnetb2_model(num_classes:int=3, 
                           seed:int=42):
     """Creates an EfficientNetB2 feature extractor model and transforms.

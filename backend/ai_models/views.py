@@ -1,14 +1,11 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import torch
-from torchvision import transforms
 from PIL import Image
-import io
-from .model_loader import EffnetB2, create_effnetb2_model  # Your model loading function
+from .model_loader import EffnetB2  # Your model loading function
 from backend.settings import BASE_DIR
 import os
-from ai_models.services.predictor import Predictor
-import torchvision
+
 
 @csrf_exempt  # For testing only - remove in production!
 def predict(request):
