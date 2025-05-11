@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'api.apps.ApiConfig',
+    'ai_models.apps.AiModelsConfig'
 ]
 
 MIDDLEWARE = [
@@ -80,6 +80,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# For model files
+MODEL_ROOT = os.path.join(BASE_DIR, 'ai_models/trained_models')
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
