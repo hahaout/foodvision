@@ -1,8 +1,9 @@
-import Fileuploader from '@/components/comp-544'
 import { Container} from '@/components/container'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import React from 'react'
+import { ModelSelector } from './components/model_selector'
+import { Model } from './components/model'
 
 function page() {
   return (
@@ -12,21 +13,7 @@ function page() {
           <p className='text-lg text-amber-400'>A website where you can identify your food by uploading your photos</p>
         </Container>
         <div className='flex max-w-screen items-center justify-center'>
-        <Card className='flex w-4xl'>
-          <CardHeader>
-            <CardTitle>
-              Title
-            </CardTitle>
-          </CardHeader>
-          <Separator/>
-          <CardContent>
-            <div className="flex h-5 items-center text-sm justify-around">
-            <Fileuploader/>
-            <Separator orientation='vertical' className='flex w-max'/>
-            <div>Conetent 2</div>
-            </div>
-          </CardContent>
-        </Card>
+        <Model/>
         </div>
     </div>
   )

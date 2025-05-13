@@ -3,8 +3,9 @@
 import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"
 
 import { useFileUpload } from "../hooks/use-file-upload"
+import { useCallback, useEffect } from "react"
 
-export default function Fileuploader() {
+export default function Fileuploader({img_selector}:{img_selector:React.Dispatch<React.SetStateAction<string | null>>}) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
 
@@ -25,6 +26,11 @@ export default function Fileuploader() {
   })
 
   const previewUrl = files[0]?.preview || null
+
+  useEffect(()=>{
+    img_selector(previewUrl)
+  },[previewUrl])
+
 
   return (
     <div className="flex flex-col gap-2">
