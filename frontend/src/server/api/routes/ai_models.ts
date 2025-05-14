@@ -1,5 +1,6 @@
 
 import { publicProcedure , createTRPCRouter } from '@/server/api/trpc'
+import { z } from 'zod';
 
 interface dataType{
     success: boolean,
@@ -8,9 +9,16 @@ interface dataType{
 }
 
 export const Agent = createTRPCRouter({
-    testing: publicProcedure.query(async()=>{
+    predict: publicProcedure
+    .input(z.object({
+        data: z.instanceof(FormData)
+    }))
+    .query(async({input})=>{
         try{
-        const response = await fetch('http://localhost:8000/api/predict/');
+        const response = await fetch('http://localhost:8000/api/predict/',{
+            method: 'POST',
+            body: input.data
+        });
 
         if (!response.ok) {
           throw new Error(`Django API error: ${response.statusText}`);

@@ -2,10 +2,10 @@
 
 import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"
 
-import { useFileUpload } from "../hooks/use-file-upload"
+import { FileWithPreview, useFileUpload } from "../hooks/use-file-upload"
 import { useCallback, useEffect } from "react"
 
-export default function Fileuploader({img_selector}:{img_selector:React.Dispatch<React.SetStateAction<string | null>>}) {
+export default function Fileuploader({img_selector}:{img_selector:React.Dispatch<React.SetStateAction<Blob | null>>}) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
 
@@ -25,11 +25,28 @@ export default function Fileuploader({img_selector}:{img_selector:React.Dispatch
     maxSize,
   })
 
-  const previewUrl = files[0]?.preview || null
+  const previewUrl = files[0]?.preview
 
-  useEffect(()=>{
-    img_selector(previewUrl)
-  },[previewUrl])
+  useEffect(() => {
+  // Define the async function inside useEffect
+  const fetchData = async () => {
+    if (!previewUrl) {
+      img_selector(null);
+    } else {
+      try {
+        const response = await fetch(previewUrl);
+        const img = await response.blob();
+        img_selector(img as Blob);
+      } catch (error) {
+        console.error('Error fetching image:', error);
+        img_selector(null);
+      }
+    }
+  };
+
+  // Call the async function
+  fetchData();
+}, [files, previewUrl, img_selector]); // Include all dependencies
 
 
   return (
