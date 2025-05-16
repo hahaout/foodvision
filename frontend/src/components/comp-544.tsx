@@ -5,7 +5,13 @@ import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"
 import { FileWithPreview, useFileUpload } from "../hooks/use-file-upload"
 import { useCallback, useEffect } from "react"
 
-export default function Fileuploader({img_selector}:{img_selector:React.Dispatch<React.SetStateAction<Blob | null>>}) {
+export default function Fileuploader({
+  img,
+  img_selector
+}:{
+  img: Blob | null
+  img_selector:React.Dispatch<React.SetStateAction<Blob | null>>
+}) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
 
@@ -48,6 +54,12 @@ export default function Fileuploader({img_selector}:{img_selector:React.Dispatch
   fetchData();
 }, [files, previewUrl, img_selector]); // Include all dependencies
 
+
+  useEffect(()=>{
+    if(img === null){
+      removeFile(files[0]?.id)
+    }
+  },[img])
 
   return (
     <div className="flex flex-col gap-2">

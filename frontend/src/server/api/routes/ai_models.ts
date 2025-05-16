@@ -30,7 +30,20 @@ export const Agent = createTRPCRouter({
         return data as dataType;}catch(error){
             throw new Error(`${error}`)
         }
-        
-        
+    
+
+    }),
+    saveData : publicProcedure
+    .input(z.object({
+        data: z.string(),
+        model: z.string(),
+    }))
+    .mutation(({input})=>{
+        console.log(input)
+        return { succcess : true}
+
     })
-})
+},
+
+
+)

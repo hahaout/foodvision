@@ -30,9 +30,19 @@ const frameworks = [
   }
 ]
 
-export function ModelSelector({setModel}:{setModel: React.Dispatch<React.SetStateAction<string>>}) {
+export function ModelSelector({
+  model,
+  setModel
+}:{
+  model:string
+  setModel: React.Dispatch<React.SetStateAction<string>>
+}) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+
+  React.useEffect(()=>{
+    setValue(model)
+  },[model])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
