@@ -31,4 +31,5 @@ urlpatterns = [
     path('', home),
     path('admin/', admin.site.urls),
     path('api/', include('ai_models.urls')),
+    path('history/', include('history.urls'))
 ]
