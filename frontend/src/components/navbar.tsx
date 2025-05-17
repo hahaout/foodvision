@@ -41,7 +41,7 @@ function Navbar() {
                   hover:bg-amber-50
                   transition-colors duration-200
                 "
-                href='/'
+                href='/history'
                 >
                   History
                 </NavigationMenuLink>

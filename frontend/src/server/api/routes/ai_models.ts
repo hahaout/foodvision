@@ -1,12 +1,8 @@
 
+import { historyType } from '@/schemas/history';
+import { predictionsDataType } from '@/schemas/prediction';
 import { publicProcedure , createTRPCRouter } from '@/server/api/trpc'
 import { z } from 'zod';
-
-interface dataType{
-    success: boolean,
-    predictions: number[],
-    classes: string[]
-}
 
 export const Agent = createTRPCRouter({
     predict: publicProcedure
@@ -27,21 +23,25 @@ export const Agent = createTRPCRouter({
         const data = await response.json();
         
         // Validate the response shape
-        return data as dataType;}catch(error){
+        return data as predictionsDataType;}catch(error){
             throw new Error(`${error}`)
         }
     
 
     }),
-    saveData : publicProcedure
-    .input(z.object({
-        data: z.string(),
-        model: z.string(),
-    }))
-    .mutation(({input})=>{
-        console.log(input)
-        return { succcess : true}
-
+    getAll : publicProcedure
+    .query(async()=>{
+        try{
+            const {data: response} = await fetch('http://127.0.0.1:8000/history/',{
+                method: "GET"
+            }).then((response)=>(response.json()))
+            //console.log(response)
+            // add unit testing later to make sure the data we received is the right format
+            return response as historyType[]
+        }
+        catch(error){
+            throw new Error(`${error}`)
+        }
     })
 },
 

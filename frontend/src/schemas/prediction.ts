@@ -1,11 +1,5 @@
 import { z } from "zod"
 
-interface dataType{
-    success: boolean,
-    predictions: number[],
-    classes: string[]
-}
-
 export const predictionsData = z.object({
     success: z.boolean(),
     predictions: z.array(z.number()),
