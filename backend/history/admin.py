@@ -2,6 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import History
+from .models import *
 
-admin.site.register(History)
+admin.site.register(History_Prediction)
+admin.site.register(History_Summary)
+admin.site.register(Prediction_Food)

@@ -67,10 +67,10 @@ export const columns: ColumnDef<historyType>[] = [
   },
   {
     accessorKey: "prediction",
-    header: "Highest Probility Food"
+    header: "Highest Probability Food"
   },
   {
-    accessorKey: "probrability",
+    accessorKey: "probability",
     header: ({column})=>{
 
       return (
@@ -79,7 +79,7 @@ export const columns: ColumnDef<historyType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className='"flex items-center gap-2 hover:bg-gray-100/50 hover:border hover:border-gray-200 transition-colors"'
         >
-          Probrability
+          Probability
           {column.getIsSorted() === "asc" ? (
             <ArrowUp className="h-3 w-3 opacity-70" />
           ) : column.getIsSorted() === "desc" ? (
@@ -91,7 +91,7 @@ export const columns: ColumnDef<historyType>[] = [
       )
     },
     cell: ({row})=>{
-      const prob = parseFloat(row.getValue("probrability"))
+      const prob = parseFloat(row.getValue("probability"))
       const percentage = (prob*100).toFixed(2)
       return <div>{percentage} %</div>
     }

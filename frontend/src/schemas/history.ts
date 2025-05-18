@@ -6,7 +6,7 @@ export const history = z.object({
     date : z.date(),
     model : z.string(),
     prediction : z.string(),
-    probrability : z.number(),
+    probability : z.number(),
     result: z.string()
 })
 

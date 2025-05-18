@@ -15,12 +15,9 @@ async function datafetch(imageBlob: Blob | null) {
     }
 
     try {
-        // Create FormData and append the blob
-        const formData = new FormData();
-        formData.append('image', imageBlob, 'upload.jpg'); // Provide a filename
 
         // Call TRPC endpoint with FormData
-        const result = await api.AgentRouter.predict({ data: formData });
+        const result = await api.AgentRouter.predict({ imageBlob: imageBlob });
         
         if (!result) {
             throw new Error("No data returned from prediction endpoint");

@@ -1,5 +1,6 @@
 
 import { historyType } from '@/schemas/history';
+import { FoodPredType, HistoryPostType, MetaDataType } from '@/schemas/history_post';
 import { predictionsDataType } from '@/schemas/prediction';
 import { publicProcedure , createTRPCRouter } from '@/server/api/trpc'
 import { z } from 'zod';
@@ -7,13 +8,18 @@ import { z } from 'zod';
 export const Agent = createTRPCRouter({
     predict: publicProcedure
     .input(z.object({
-        data: z.instanceof(FormData)
+        imageBlob: z.instanceof(Blob)
     }))
     .query(async({input})=>{
         try{
+        
+        // Create FormData and append the blob
+        const formData = new FormData();
+        formData.append('image', input.imageBlob, 'upload.jpg')  
+
         const response = await fetch('http://localhost:8000/api/predict/',{
             method: 'POST',
-            body: input.data
+            body: formData
         });
 
         if (!response.ok) {
@@ -42,6 +48,16 @@ export const Agent = createTRPCRouter({
         catch(error){
             throw new Error(`${error}`)
         }
+    }),
+    getDetail : publicProcedure
+    .input(z.object({id: z.number()}))
+    .query(async ({input})=>{
+
+        const data = await fetch(`http://127.0.0.1:8000/history/${input.id}/`)
+        const output = await data.json()
+        
+        return output as HistoryPostType
+        
     })
 },
 

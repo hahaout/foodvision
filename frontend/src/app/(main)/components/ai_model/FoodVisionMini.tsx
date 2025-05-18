@@ -3,6 +3,8 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { datafetch } from './actions'
 import { Progress } from '@/components/ui/progress'
+import { Spinner } from '@/components/ui/spinner'
+
 
 interface dataType {
     success: boolean,
@@ -21,6 +23,7 @@ function FoodVisionMini({
   image_path: Blob | null
 }) {
   const [data, setData] = useState<dataType | undefined>()
+  const [isLoading, setIsLoading] = useState(false) // Add loading state
 
   // Calculate and memoize top predictions
   const topPredictions = useMemo<Prediction[]>(() => {
@@ -45,7 +48,10 @@ function FoodVisionMini({
   // Fetch data when image changes
   useEffect(() => {
     if (image_path) {
-      datafetch(image_path).then(setData)
+      setIsLoading(true) // Set loading to true when starting fetch
+      datafetch(image_path)
+        .then(setData)
+        .finally(() => setIsLoading(false)) // Set loading to false when done
     } else {
       setData(undefined)
     }
@@ -55,9 +61,18 @@ function FoodVisionMini({
 
   return (
     <div>
-      {!data || data.predictions.length === 0 ? (
+      {!image_path ? (
         <div className='font-bold text-xl'>
           Please insert an image
+        </div>
+      ) : isLoading ? (
+        <div className="flex justify-center items-center h-32">
+          <Spinner className="h-8 w-8"/>
+          <span className="ml-2">Analyzing image...</span>
+        </div>
+      ) : !data || data.predictions.length === 0 ? (
+        <div className='font-bold text-xl'>
+          No predictions available
         </div>
       ) : (
         <>
