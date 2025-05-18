@@ -9,6 +9,11 @@ const empty : predictionsDataType = {
     classes: []
 }
 
+interface PredictionData {
+  className: string
+  probability: number
+}
+
 async function datafetch(imageBlob: Blob | null) {
     if (!imageBlob) {
         return empty;
@@ -33,5 +38,27 @@ async function datafetch(imageBlob: Blob | null) {
         );
     }
 }
-
-export { datafetch };
+async function saveHistory(
+    {
+    model,
+    predictions
+}:{
+    model:string,
+    predictions : PredictionData[]
+}
+){
+    try{
+        const result = await api.AgentRouter.save({
+            model: model,
+            predictions: predictions
+        })
+        if (!result) {
+            throw new Error("Save Failed");
+        }
+        return result
+    }
+    catch(error){
+        console.error("Error:", error);
+    }
+}
+export { datafetch , saveHistory};

@@ -58,6 +58,39 @@ export const Agent = createTRPCRouter({
         
         return output as HistoryPostType
         
+    }),
+    save: publicProcedure
+    .input(z.object({
+        model: z.string(),
+        predictions : z.array(z.object({
+            className: z.string(),
+            probability: z.number()
+        })),
+    }))
+    .mutation(async ({input})=>{
+        // for image input
+        const formData = new FormData
+        // for data
+
+        // since we need to add image and string so for data consistency we pass the whole thing through file
+        const data = new Blob([JSON.stringify({
+            "model" : input.model,
+            "predictions" : input.predictions.map((item)=>({
+                "food" : item.className,
+                "probability" : item.probability
+            }))
+        })],{type : "application/json"})
+
+        formData.append("prediction_data",data, 'data.json')
+        console.log(formData)
+
+        const {success : status} = await fetch('http://127.0.0.1:8000/history/save-data',{
+            method : 'POST',
+            body : formData
+        }).then((response)=>(response.json()))
+
+        return status
+
     })
 },
 

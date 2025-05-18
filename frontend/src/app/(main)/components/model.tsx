@@ -8,7 +8,8 @@ import { ModelSelector } from './model_selector'
 import FoodVisionMini from './ai_model/FoodVisionMini'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { api } from '@/trpc/react'
+import { saveHistory } from './ai_model/actions'
+
 
 interface PredictionData {
   className: string
@@ -25,8 +26,6 @@ function Model() {
   const [model, setModel] = useState<string>("")
   const [foodImg, setFoodImg] = useState<Blob | null>(null)
   const [isSaving, setIsSaving] = useState(false)
-
-  const {mutateAsync} = api.AgentRouter.saveData.useMutation()
 
   const saveData = useCallback(async () => {
     const data = sessionStorage.getItem("predictions")
@@ -50,12 +49,13 @@ function Model() {
       setIsSaving(true)
       toast.loading("Saving data...", { id: "save-data" })
       
-      
+      const prediction = sessionStorage.getItem("predictions")
+      if (prediction == null){
+        return Error("failed to get prediction")
+      }
+      const data : PredictionData[] = JSON.parse(prediction)
       // mutate to save data
-      await mutateAsync({
-        data: data,
-        model: model
-      })
+      const {success} = await saveHistory({ model : model,predictions :data})
       
       toast.success("Data saved successfully!", { id: "save-data" })
     } catch (error) {
