@@ -1,6 +1,8 @@
 import { api } from '@/trpc/server';
 import Image from 'next/image';
 import React from 'react';
+import { ImageDisplayer } from './components/image-display';
+
 
 interface PageProps {
   params: { id: string };
@@ -8,10 +10,7 @@ interface PageProps {
 
 async function page({ params }: PageProps) {
   const data = await api.AgentRouter.getDetail({ id: parseInt(params.id) });
-
-  // Construct the proper data URL for the image
-  const imageSrc = `data:image/png;base64,${data.meta_data.image}`;
-
+  console.log(data)
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Prediction Details</h1>
@@ -27,14 +26,7 @@ async function page({ params }: PageProps) {
       </div>
       
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        {/* Use a regular img tag for base64 images */}
-        <Image 
-          src={imageSrc} 
-          alt="Prediction result" 
-          className="w-full h-auto max-h-[600px] object-contain"
-          height={600}          
-          width={600}
-        />
+      <ImageDisplayer base64String={data.image}/>
       </div>
       
       <div className="bg-white rounded-lg shadow p-6">
