@@ -4,7 +4,7 @@ class History_Prediction(models.Model):
     """Stores complete prediction session details (One-to-Many with Prediction)"""
     date = models.DateTimeField(auto_now_add=True)
     model = models.CharField(max_length=20)
-    # image = models.ImageField(upload_to='predictions/', null=True, blank=True)
+    image = models.ImageField(upload_to='food_images/', null=True, blank=True)
 
 class Prediction_Food(models.Model):
     """Stores individual food prediction probabilities"""

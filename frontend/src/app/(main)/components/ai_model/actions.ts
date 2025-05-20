@@ -41,16 +41,19 @@ async function datafetch(imageBlob: Blob | null) {
 async function saveHistory(
     {
     model,
-    predictions
+    predictions,
+    image
 }:{
     model:string,
     predictions : PredictionData[]
+    image : Blob
 }
 ){
     try{
         const result = await api.AgentRouter.save({
             model: model,
-            predictions: predictions
+            predictions: predictions,
+            imageBlob : image
         })
         if (!result) {
             throw new Error("Save Failed");

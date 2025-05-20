@@ -55,7 +55,7 @@ function Model() {
       }
       const data : PredictionData[] = JSON.parse(prediction)
       // mutate to save data
-      const {success} = await saveHistory({ model : model,predictions :data})
+      const {success} = await saveHistory({ model : model,predictions :data , image: foodImg})
       
       toast.success("Data saved successfully!", { id: "save-data" })
     } catch (error) {

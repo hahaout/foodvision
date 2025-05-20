@@ -10,7 +10,8 @@ export type FoodPredType = z.infer<typeof FoodPred>
 export const MetaData = z.object({
     id: z.number(),
     date: z.date(),
-    model: z.string()
+    model: z.string(),
+    image: z.string()
 })
 
 export type MetaDataType = z.infer<typeof MetaData>

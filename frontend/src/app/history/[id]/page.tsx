@@ -1,14 +1,17 @@
-import { api } from '@/trpc/server'
-import { useRouter } from 'next/router'
-import React from 'react'
+import { api } from '@/trpc/server';
+import Image from 'next/image';
+import React from 'react';
 
 interface PageProps {
-  params: { id: string }; // Next.js automatically injects params
+  params: { id: string };
 }
 
-async function page({params}:PageProps) {
+async function page({ params }: PageProps) {
+  const data = await api.AgentRouter.getDetail({ id: parseInt(params.id) });
 
-    const data = await api.AgentRouter.getDetail({id:parseInt(params.id)})
+  // Construct the proper data URL for the image
+  const imageSrc = `data:image/png;base64,${data.meta_data.image}`;
+
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Prediction Details</h1>
@@ -22,7 +25,18 @@ async function page({params}:PageProps) {
           <p><span className="font-medium">Status:</span> {data.detailed_predictions[0].probability >= 0.5 ? "Success" : "Failed"}</p>
         </div>
       </div>
-
+      
+      <div className="bg-white rounded-lg shadow p-6 mb-6">
+        {/* Use a regular img tag for base64 images */}
+        <Image 
+          src={imageSrc} 
+          alt="Prediction result" 
+          className="w-full h-auto max-h-[600px] object-contain"
+          height={600}          
+          width={600}
+        />
+      </div>
+      
       <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-xl font-semibold mb-4">Predictions</h2>
         <div className="space-y-4">
@@ -43,7 +57,7 @@ async function page({params}:PageProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default page
+export default page;

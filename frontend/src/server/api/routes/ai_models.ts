@@ -66,6 +66,7 @@ export const Agent = createTRPCRouter({
             className: z.string(),
             probability: z.number()
         })),
+        imageBlob : z.instanceof(Blob)
     }))
     .mutation(async ({input})=>{
         // for image input
@@ -82,7 +83,7 @@ export const Agent = createTRPCRouter({
         })],{type : "application/json"})
 
         formData.append("prediction_data",data, 'data.json')
-        console.log(formData)
+        formData.append("image", input.imageBlob, 'image.jpg')
 
         const {success : status} = await fetch('http://127.0.0.1:8000/history/save-data',{
             method : 'POST',

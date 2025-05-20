@@ -1,4 +1,5 @@
 
+import base64
 from django.shortcuts import get_object_or_404
 # Create your views here.
 from django.http import Http404, JsonResponse
@@ -7,6 +8,9 @@ from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
+from PIL import Image
+import io
+from django.core.files.base import ContentFile
 
 # Helper Function
 def prob_assertion(prob: float):
@@ -44,6 +48,9 @@ def history_detail(request, pk):
         # Get related predictions
         predictions =  History_Prediction.objects.get(pk=summary.Prediction.pk)
         food = predictions.prediction.all() # type: ignore
+        image_bytes = predictions.image.read()
+
+        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
 
         data = {
             "meta_data": {
@@ -56,7 +63,8 @@ def history_detail(request, pk):
                     "food": pred.food,
                     "probability": float(pred.probability)
                 } for pred in food
-            ]
+            ],
+            "image" : image_base64
         }
         
         return JsonResponse(data)
@@ -67,14 +75,16 @@ def history_detail(request, pk):
 @require_POST
 def save_data(request):
     # Check for file existence
-    if "prediction_data" not in request.FILES:
+    if "prediction_data" not in request.FILES or "image" not in request.FILES:
         return JsonResponse({'error': 'Prediction data file is missing'}, status=400)
     
     try:
         # Read and parse JSON data
         file = request.FILES['prediction_data']
+        image_file = request.FILES['image']
         try:
             json_data = json.loads(file.read().decode('utf-8'))
+            image_byte = image_file.read()
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
         
@@ -88,8 +98,9 @@ def save_data(request):
         # Create history prediction
         new_history = History_Prediction.objects.create(
             date=datetime.now(),
-            model=json_data['model']
+            model=json_data['model'],
         )
+        new_history.image.save(image_file.name,ContentFile(image_byte), save=True)
         
         # Create food predictions
         for item in json_data['predictions']:
