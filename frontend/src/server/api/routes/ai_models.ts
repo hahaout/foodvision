@@ -53,7 +53,7 @@ export const Agent = createTRPCRouter({
     .input(z.object({id: z.number()}))
     .query(async ({input})=>{
 
-        const data = await fetch(`http://127.0.0.1:8000/history/${input.id}/`)
+        const data = await fetch(`http://127.0.0.1:8000/history/details/${input.id}/`)
         const output = await data.json()
         
         return output as HistoryPostType
@@ -89,9 +89,26 @@ export const Agent = createTRPCRouter({
             method : 'POST',
             body : formData
         }).then((response)=>(response.json()))
-
+        console.log(status)
         return status
 
+    }),
+    deleteHistoryId: publicProcedure
+    .input(z.object({
+        id : z.number()
+    }))
+    .mutation(async ({input})=>{
+        const pk = input.id  // offset back to order of array
+        const response : { status: boolean} = await fetch(`http://127.0.0.1:8000/history/delete/${pk}`,{
+            method: "POST"
+        }
+
+        ).then((response)=>(response.json()))
+
+        
+        console.log(response)
+        
+        return response
     })
 },
 

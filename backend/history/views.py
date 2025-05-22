@@ -67,7 +67,7 @@ def history_detail(request, pk):
             "image" : image_base64
         }
         
-        return JsonResponse(data)
+        return JsonResponse(data, status = 200)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
@@ -123,7 +123,17 @@ def save_data(request):
             probability=float(json_data['predictions'][0]['probability'])
         )
         
-        return JsonResponse({'success': True, 'history_id': new_history.pk})
+        return JsonResponse({'success': True, 'history_id': new_history.pk}, status = 200)
     
+    except Exception as e:
+        return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
+
+@csrf_exempt    
+@require_POST
+def delete_data(request, pk):
+    try:
+        found = get_object_or_404(History_Summary, pk=pk)
+        success = found.delete()
+        return JsonResponse({'status': bool(success[0])}, status=200)
     except Exception as e:
         return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)

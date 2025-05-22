@@ -31,6 +31,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { api } from "@/trpc/react"
+import { toast } from "sonner"
+import { historyType } from "@/schemas/history"
+import { deleteId, getTableData } from "./actions"
+import { useQueryClient } from "@tanstack/react-query"
+import { columns } from "./columns"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -48,6 +54,9 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [toDelRow, setToDelRow] = React.useState<number[]>([])
+
+  const client = useQueryClient()
 
   const table = useReactTable({
     data,
@@ -75,7 +84,31 @@ export function DataTable<TData, TValue>({
   //{table.getFilteredSelectedRowModel().rows.length} of{" "}
   //{table.getFilteredRowModel().rows.length} row(s) selected.
   //</div>
+  
+  React.useEffect(()=>{
+      //console.log(table.getSelectedRowModel().rows)
+      const toDel : number[] = []
+      table.getSelectedRowModel().flatRows.map((data)=>{
+        const history  = data.original as historyType
+        toDel.push(history.id)
+      })  
+      setToDelRow(toDel)   
+  },[table.getSelectedRowModel()])
 
+  const handleDelete = async () => {
+  try {
+    deleteId({ toDel_id: toDelRow });
+    toast.success("Items deleted successfully");
+    client.invalidateQueries({
+      queryKey: ["AgentRouter", "getAll"],
+      refetchType: 'active'
+    });
+    table.resetRowSelection(); // Clear selection after delete
+  } catch (error) {
+    toast.error("Failed to delete items");
+  }
+};
+  
   return (
     <div className="p-10">
       <div className="flex items-center py-4">
@@ -164,6 +197,14 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
+          onClick={handleDelete}
+          disabled={table.getSelectedRowModel().flatRows.length == 0}
+        >
+          Delete
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -181,3 +222,4 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
