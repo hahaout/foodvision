@@ -2,14 +2,15 @@ PyTorch Deep Learning Project with Next.js, TypeScript, and Django - README
 
 Project Overview
 ---------------
-This project combines a PyTorch deep learning model with a modern web stack featuring Next.js (TypeScript) for the frontend and Django for the backend. The implementation is based on the PyTorch Deep Learning materials from mrdbourke/pytorch-deep-learning (https://github.com/mrdbourke/pytorch-deep-learning).
+This project combines a PyTorch deep learning model with a modern web stack featuring Next.js (TypeScript) for the frontend and Django for the backend. 
+The implementation is based on the PyTorch Deep Learning materials from mrdbourke/pytorch-deep-learning (https://github.com/mrdbourke/pytorch-deep-learning).
 
 Tech Stack
 ----------
 - Frontend: Next.js with TypeScript, tRPC
 - Backend: Django
 - AI/ML: PyTorch models from mrdbourke's repository
-- Deployment: (To be determined based on your needs)
+- Deployment: TBA
 
 Getting Started
 ---------------
@@ -29,16 +30,12 @@ Installation
 
 2. Set up the frontend (Next.js)
    cd frontend
-   yarn install  # or npm install
+   pnpm install
 
 3. Set up the backend (Django)
    cd ../backend
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-
-4. Set up the AI components
-   cd ../ai
    pip install -r requirements.txt
 
 Project Structure
