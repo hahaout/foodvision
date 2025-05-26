@@ -20,7 +20,7 @@ Prerequisites
 - Node.js (v16 or later)
 - Python (3.8 or later)
 - pip
-- yarn or npm
+- pnpm
 
 Installation
 ------------
