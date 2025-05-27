@@ -25,25 +25,48 @@ Prerequisites
 Installation
 ------------
 1. Clone the repository
+   ```bash
    git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   ```
 
-2. Set up the frontend (Next.js)
+3. Set up the frontend (Next.js)
+```bash
    cd frontend
    pnpm install
+```
 
-3. Set up the backend (Django)
+5. Set up the backend (Django)
+   ```bash
    cd ../backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python -m venv venv # to create virtual environmen(venv)
+   . /venv/Scripts/activate.ps1 # to activate venv
    pip install -r requirements.txt
+   ```
 
 Project Structure
 ----------------
-```bash
-project-root/
-|
-|---(TBA)
+```
+foodvision
+├ backend
+│   ├ ai_models     (contains api for pizza-steak-sushi AI model)
+│   ├ backend       (settings for django)
+│   ├ food_images   (saved food images)
+│   ├  history      (api for history page)
+│   └ db.sqlite3    (Database for backend)
+│ ....
+└ frontend
+   ├ public         (images)
+   └ src   
+      ├ app         
+      |  ├ (main)   (Home Page)
+      |  └ history  (History Page)
+      ├ components  (components from ShadCN UI)
+      ├ hooks       (hook for server-side actions)
+      ├ lib         (utils file)
+      ├ schemas     (schemas for Type-Safe)
+      ├ server      (tRPC server/cilent for api-fetching)
+      └ trpc        (tRPC code)
+      ....
 ```
 Running the Application
 ----------------------
