@@ -21,6 +21,7 @@ Prerequisites
 - Python (3.8 or later)
 - pip
 - pnpm
+- git
 
 Installation
 ------------
@@ -81,6 +82,18 @@ Running the Application
 3. Access the application
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
+
+Development
+-------------------------
+1. Create a branch from main
+   ```bash
+   git branch new-branch-name    # Create the branch
+   git checkout new-branch-name  # Switch to it
+   ```
+
+2. Develop in your branch
+   
+3. Create a Pull request to merge into main branch
 
 Features
 --------
